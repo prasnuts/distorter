@@ -12,9 +12,6 @@ Window {
     readonly property real heightRatio: 0.8
     readonly property int marginWidth: 20
     readonly property int borderWidth: 2
-    property bool isPlaying: false
-    property bool isRecording: false
-    property var camList
 
     Row {
         id: mainView
