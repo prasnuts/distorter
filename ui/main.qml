@@ -35,10 +35,17 @@ Window {
             }
 
             Rectangle {
-                id: originalImage
+                id: originalContainer
                 width: mainView.rowWidth
                 height: mainView.height - label.height - leftColumn.spacing
                 border.width: borderWidth
+
+                Image {
+                    id: originalImage
+                    anchors.fill: parent
+                    anchors.margins: marginWidth / 2
+                    fillMode: Image.PreserveAspectFit
+                }
             }
         }
 
@@ -54,10 +61,17 @@ Window {
             }
 
             Rectangle {
-                id: distortedImage
+                id: distortedContainer
                 width: mainView.rowWidth
                 height: mainView.height - label.height - leftColumn.spacing
                 border.width: borderWidth
+
+                Image {
+                    id: distortedImage
+                    anchors.fill: parent
+                    anchors.margins: marginWidth / 2
+                    fillMode: Image.PreserveAspectFit
+                }
             }
         }
 
@@ -68,6 +82,32 @@ Window {
         id: toolView
         width: parent.width
         height: parent.height - mainView.height
-        anchors.margins: marginWidth
+        anchors.top: mainView.bottom
+
+        Button {
+            id: button
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: marginWidth
+            text: "Click"
+
+            onClicked: {
+                distorter.generateChessboard();
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        distorter.generateChessboard();
+    }
+
+    Connections {
+        target: distorter
+        enabled: true
+        ignoreUnknownSignals: true
+
+        onChessboardGenerated: {
+            originalImage.source = "image://imageProvider/original?rand=" + Math.random();
+        }
     }
 }
