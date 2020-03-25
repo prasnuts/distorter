@@ -16,6 +16,8 @@ public:
 public slots:
     void onChessboardGenerated(const cv::Mat &chessboard);
 
+    void onNewUndistortedImage(const cv::Mat &undistortedImage);
+
 private:
     QPixmap m_pixmap{};
 };
