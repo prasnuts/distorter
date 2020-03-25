@@ -193,6 +193,10 @@ Window {
         k3ValueWidget.reset();
         cxValueWidget.initVal = originalImage.sourceSize.width * 0.5;
         cyValueWidget.initVal = originalImage.sourceSize.height * 0.5;
+
+    function updateCalibMatrix() {
+        distorter.updateIntrinsics(fxValueWidget.value, fyValueWidget.value, cxValueWidget.value, cyValueWidget.value,
+            k1ValueWidget.value, k2ValueWidget.value, k3ValueWidget.value);
     }
 
 }
