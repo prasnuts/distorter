@@ -16,5 +16,12 @@ public:
 
 signals:
     void chessboardGenerated(const cv::Mat &chessboard);
+
+    void newUndistortedImage(const cv::Mat &undistortedImage);
+
+private:
+    cv::Mat m_chessboard;
+    cv::Mat m_calibM;
+    cv::Mat m_distCoeffs;
 };
 
