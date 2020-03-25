@@ -33,4 +33,22 @@ void Distorter::generateChessboard()
     }
     emit chessboardGenerated(m_chessboard);
 }
+
+void Distorter::updateIntrinsics(float fx, float fy, float cx, float cy, float k1, float k2, float k3)
+{
+    m_calibM.at<double>(0,0) = fx;
+    m_calibM.at<double>(1,1) = fy;
+    m_calibM.at<double>(0,2) = cx;
+    m_calibM.at<double>(1,2) = cy;
+
+    m_distCoeffs.at<double>(0,0) = k1;
+    m_distCoeffs.at<double>(0,1) = k2;
+    m_distCoeffs.at<double>(0,4) = k3;
+
+    if(m_chessboard.cols == 0){
+        return;
+    }
+    cv::Mat undistortedImage;
+    cv::undistort(m_chessboard, undistortedImage, m_calibM, m_distCoeffs);
+    newUndistortedImage(undistortedImage);
 }

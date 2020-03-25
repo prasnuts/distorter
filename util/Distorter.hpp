@@ -14,6 +14,8 @@ public:
 
     Q_INVOKABLE void generateChessboard();
 
+    Q_INVOKABLE void updateIntrinsics(float fx, float fy, float cx, float cy, float k1, float k2, float k3);
+
 signals:
     void chessboardGenerated(const cv::Mat &chessboard);
 
