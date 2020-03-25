@@ -62,8 +62,8 @@ Rectangle {
         stepSize: 1
         value: 100
         onValueChanged: {
+            tuneSlider.visible = true;
             stepTextField.text = value.toFixed(precision);
-            valueTextField.text = (initVal + value * tuneSlider.value).toFixed(precision);
             valueTextField.text = (initVal + value * tuneSlider.value).toFixed(precision);
         }
     }
@@ -92,9 +92,9 @@ Rectangle {
         to: 10
         stepSize: 1
         value: 10
+        visible: false
         onValueChanged: {
             tuneTextField.text = value.toFixed(precision);
-            valueTextField.text = (initVal + stepSlider.value * value).toFixed(precision);
             valueTextField.text = (initVal + stepSlider.value * value).toFixed(precision);
         }
     }
@@ -124,6 +124,7 @@ Rectangle {
         valueTextField.text = initVal.toFixed(precision);
         stepSlider.value = stepSlider.from.toFixed(precision);
         tuneSlider.value = 0;
+        tuneSlider.visible = false;
     }
 
 }
