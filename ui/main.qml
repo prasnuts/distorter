@@ -95,6 +95,10 @@ Window {
                 name: "Fx"
                 initVal: 1200
                 stepSize: 10
+
+                onValueChanged: {
+                    updateCalibMatrix();
+                }
             }
 
             ValueWidget {
@@ -102,42 +106,71 @@ Window {
                 name: "Fy"
                 initVal: 1200
                 stepSize: 10
+
+                onValueChanged: {
+                    updateCalibMatrix();
+                }
             }
 
             ValueWidget {
                 id: cxValueWidget
                 name: "Cx"
+                initVal: 800
                 stepSize: 5
+
+                onValueChanged: {
+                    updateCalibMatrix();
+                }
             }
 
             ValueWidget {
                 id: cyValueWidget
                 name: "Cy"
+                initVal: 600
                 stepSize: 5
+
+                onValueChanged: {
+                    updateCalibMatrix();
+                }
             }
 
             ValueWidget {
                 id: k1ValueWidget
                 name: "k1"
+                initVal: 0
                 minStepVal: 0
                 maxStepVal: 1
                 stepSize: 0.01
+
+                onValueChanged: {
+                    updateCalibMatrix();
+                }
             }
 
             ValueWidget {
                 id: k2ValueWidget
                 name: "k2"
+                initVal: 0
                 minStepVal: 0
                 maxStepVal: 1
                 stepSize: 0.01
+
+                onValueChanged: {
+                    updateCalibMatrix();
+                }
             }
 
             ValueWidget {
                 id: k3ValueWidget
                 name: "k3"
+                initVal: 0
                 minStepVal: 0
                 maxStepVal: 1
                 stepSize: 0.01
+
+                onValueChanged: {
+                    updateCalibMatrix();
+                }
             }
         }
 
@@ -166,11 +199,15 @@ Window {
         onChessboardGenerated: {
             originalImage.source = "image://imageProvider/original?rand=" + Math.random();
         }
+
+        onNewUndistortedImage: {
+            distortedImage.source = "image://imageProvider/distort?rand=" + Math.random();
+        }
     }
 
     Timer {
         id: timerStartUp
-        interval: 500
+        interval: 25
         repeat: false
         onTriggered: {
             startUp();
@@ -191,8 +228,9 @@ Window {
         k1ValueWidget.reset();
         k2ValueWidget.reset();
         k3ValueWidget.reset();
-        cxValueWidget.initVal = originalImage.sourceSize.width * 0.5;
-        cyValueWidget.initVal = originalImage.sourceSize.height * 0.5;
+        distorter.updateIntrinsics(fxValueWidget.initVal, fyValueWidget.initVal, cxValueWidget.initVal,
+            cyValueWidget.initVal, k1ValueWidget.initVal, k2ValueWidget.initVal, k3ValueWidget.initVal);
+    }
 
     function updateCalibMatrix() {
         distorter.updateIntrinsics(fxValueWidget.value, fyValueWidget.value, cxValueWidget.value, cyValueWidget.value,
