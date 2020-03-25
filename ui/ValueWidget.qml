@@ -10,6 +10,7 @@ Rectangle {
     property alias stepSize: stepSlider.stepSize
     property alias minStepVal: stepSlider.from
     property alias maxStepVal: stepSlider.to
+    property alias value: valueTextField.text
 
     readonly property int marginWidth: 5
     readonly property real textFieldWidth: width - tuneLabel.width - marginWidth * 2
@@ -59,7 +60,7 @@ Rectangle {
         from: 0
         to: 100
         stepSize: 1
-        value: to
+        value: 100
         onValueChanged: {
             stepTextField.text = value.toFixed(precision);
             valueTextField.text = (initVal + value * tuneSlider.value).toFixed(precision);
@@ -90,7 +91,7 @@ Rectangle {
         from: -10
         to: 10
         stepSize: 1
-        value: to
+        value: 10
         onValueChanged: {
             tuneTextField.text = value.toFixed(precision);
             valueTextField.text = (initVal + stepSlider.value * value).toFixed(precision);
