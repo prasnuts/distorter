@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
     ImageProvider * imageProvider = new ImageProvider{};
 
     QObject::connect(&distorter, &Distorter::chessboardGenerated, imageProvider, &ImageProvider::onChessboardGenerated);
+    QObject::connect(&distorter, &Distorter::newUndistortedImage, imageProvider, &ImageProvider::onNewUndistortedImage);
 
     QQmlApplicationEngine engine;
     engine.addImageProvider("imageProvider", imageProvider);
