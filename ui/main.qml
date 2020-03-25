@@ -19,7 +19,7 @@ Window {
     Row {
         id: mainView
         width: parent.width - spacing
-        height: parent.height * heightRatio
+        height: parent.height - toolView.height
         spacing: marginWidth
         anchors.horizontalCenter: parent.horizontalCenter
         readonly property real rowWidth: parent.width * 0.5 - spacing
@@ -84,96 +84,60 @@ Window {
     Item {
         id: toolView
         width: parent.width
-        height: parent.height - mainView.height
+        height: fxValueWidget.height
         anchors.top: mainView.bottom
 
-        Label {
-            id: fxLabel
-            anchors.left: parent.left
-            anchors.leftMargin: marginWidth * 0.5
-            anchors.verticalCenter: fxTextField.verticalCenter
-            text: "Fx"
-        }
-        TextField {
-            id: fxTextField
-            anchors.left: fxLabel.right
-            anchors.top: parent.top
-            anchors.topMargin: marginWidth
-            anchors.leftMargin: marginWidth * 0.5
-            horizontalAlignment: Text.AlignRight
-            text: "n/a"
-            enabled: false
-        }
+        Row {
+            spacing: 8
 
-        Label {
-            id: fyLabel
-            anchors.left: fxLabel.left
-            anchors.verticalCenter: fyTextField.verticalCenter
-            text: "Fy"
-        }
-        TextField {
-            id: fyTextField
-            anchors.left: fyLabel.right
-            anchors.top: fxTextField.bottom
-            anchors.topMargin: marginWidth * 0.5
-            anchors.leftMargin: marginWidth * 0.5
-            horizontalAlignment: Text.AlignRight
-            text: "n/a"
-            enabled: false
-        }
-
-        Label {
-            id: fStepLabel
-            anchors.left: parent.left
-            anchors.leftMargin: marginWidth * 0.5
-            anchors.verticalCenter: fStepSlider.verticalCenter
-            text: "Step"
-        }
-        Slider {
-            id: fStepSlider
-            anchors.left: fStepLabel.right
-            anchors.right: fStepValueLabel.left
-            anchors.top: fyTextField.bottom
-            anchors.topMargin: marginWidth * 0.5
-            from: 1
-            to: 100
-            stepSize: 1
-            value: 1
-            onValueChanged: {
-                fxTextField.text = fxInitVal + value * fTuneSlider.value;
-                fyTextField.text = fyInitVal + value * fTuneSlider.value;
+            ValueWidget {
+                id: fxValueWidget
+                name: "Fx"
+                initVal: 1200
+                stepSize: 10
             }
-        }
-        Label {
-            id: fStepValueLabel
-            width: 25
-            anchors.right: fyTextField.right
-            anchors.verticalCenter: fStepSlider.verticalCenter
-            text: fStepSlider.value
-            horizontalAlignment: Text.AlignRight
-        }
 
-        Label {
-            id: fTuneLabel
-            anchors.left: parent.left
-            anchors.leftMargin: marginWidth * 0.5
-            anchors.verticalCenter: fTuneSlider.verticalCenter
-            text: "Tune"
-        }
-        Slider {
-            id: fTuneSlider
-            anchors.left: fTuneLabel.right
-            anchors.right: fStepValueLabel.right
-            anchors.top: fStepSlider.bottom
-            anchors.topMargin: marginWidth * 0.5
-            from: -10
-            to: 10
-            stepSize: 1
-            value: 0
+            ValueWidget {
+                id: fyValueWidget
+                name: "Fy"
+                initVal: 1200
+                stepSize: 10
+            }
 
-            onValueChanged: {
-                fxTextField.text = fxInitVal + fStepSlider.value * value;
-                fyTextField.text = fyInitVal + fStepSlider.value * value;
+            ValueWidget {
+                id: cxValueWidget
+                name: "Cx"
+                stepSize: 5
+            }
+
+            ValueWidget {
+                id: cyValueWidget
+                name: "Cy"
+                stepSize: 5
+            }
+
+            ValueWidget {
+                id: k1ValueWidget
+                name: "k1"
+                minStepVal: 0
+                maxStepVal: 1
+                stepSize: 0.01
+            }
+
+            ValueWidget {
+                id: k2ValueWidget
+                name: "k2"
+                minStepVal: 0
+                maxStepVal: 1
+                stepSize: 0.01
+            }
+
+            ValueWidget {
+                id: k3ValueWidget
+                name: "k3"
+                minStepVal: 0
+                maxStepVal: 1
+                stepSize: 0.01
             }
         }
 
@@ -220,7 +184,15 @@ Window {
     }
 
     function reset() {
-        fxTextField.text = fxInitVal;
-        fyTextField.text = fyInitVal;
+        fxValueWidget.reset();
+        fyValueWidget.reset();
+        cxValueWidget.reset();
+        cyValueWidget.reset();
+        k1ValueWidget.reset();
+        k2ValueWidget.reset();
+        k3ValueWidget.reset();
+        cxValueWidget.initVal = originalImage.sourceSize.width * 0.5;
+        cyValueWidget.initVal = originalImage.sourceSize.height * 0.5;
     }
+
 }
