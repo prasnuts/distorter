@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 Rectangle {
     id: root
     width: 200
-    height: 300
+    height: 250
 
     property alias name: nameLabel.text
     property alias stepSize: stepSlider.stepSize
