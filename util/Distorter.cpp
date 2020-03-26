@@ -1,6 +1,10 @@
 #include "Distorter.hpp"
 
+#include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
+
+#include <QDomDocument>
+#include <QFile>
 
 Distorter::Distorter(QObject *parent) : QObject(parent)
 {
@@ -34,7 +38,7 @@ void Distorter::generateChessboard()
     emit chessboardGenerated(m_chessboard);
 }
 
-void Distorter::updateIntrinsics(float fx, float fy, float cx, float cy, float k1, float k2, float k3)
+void Distorter::updateIntrinsics(double fx, double fy, double cx, double cy, double k1, double k2, double k3)
 {
     m_calibM.at<double>(0,0) = fx;
     m_calibM.at<double>(1,1) = fy;
@@ -53,6 +57,11 @@ void Distorter::updateIntrinsics(float fx, float fy, float cx, float cy, float k
     emit newUndistortedImage(undistortedImage);
 }
 
+bool Distorter::loadCalibrationAndImage()
+{
+    return loadCalibrationAndImage(DATA_DIR"/calib.xml", DATA_DIR"/image.jpg");
+}
+
 void Distorter::onChessboardReady()
 {
     emit chessboardReady();
@@ -61,4 +70,43 @@ void Distorter::onChessboardReady()
 void Distorter::onUndistortedImageReady()
 {
     emit undistortImageReady();
+}
+
+bool Distorter::loadCalibrationAndImage(const QString &calibFilename, const QString &imageFilename)
+{
+    QDomDocument doc{};
+    QFile file(calibFilename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+    if (!doc.setContent(&file)){
+        file.close();
+        return false;
+    }
+    file.close();
+
+    bool widthOk, heightOk, fxOk, fyOk, cxOk, cyOk, k1Ok, k2Ok, k3Ok;
+    const auto width = doc.elementsByTagName("width").at(0).toElement().text().toInt(&widthOk);
+    const auto height = doc.elementsByTagName("height").at(0).toElement().text().toInt(&heightOk);
+    const auto fx = doc.elementsByTagName("fx").at(0).toElement().text().toDouble(&fxOk);
+    const auto fy = doc.elementsByTagName("fy").at(0).toElement().text().toDouble(&fyOk);
+    const auto cx = doc.elementsByTagName("cx").at(0).toElement().text().toDouble(&cxOk);
+    const auto cy = doc.elementsByTagName("cy").at(0).toElement().text().toDouble(&cyOk);
+    const auto k1 = doc.elementsByTagName("k1").at(0).toElement().text().toDouble(&k1Ok);
+    const auto k2 = doc.elementsByTagName("k2").at(0).toElement().text().toDouble(&k2Ok);
+    const auto k3 = doc.elementsByTagName("k3").at(0).toElement().text().toDouble(&k3Ok);
+
+    if(!widthOk || !heightOk || !fxOk || !fyOk || !cxOk || !cyOk || !k1Ok || !k2Ok || !k3Ok){
+        return false;
+    }
+
+    cv::Mat tempImage = cv::imread(imageFilename.toStdString());
+    if(tempImage.cols != width || tempImage.rows != height){
+        return false;
+    }
+
+    m_chessboard = tempImage;
+    emit chessboardGenerated(m_chessboard);
+    emit newCalibLoaded(fx, fy, cx, cy, k1, k2, k3);
+    return true;
 }

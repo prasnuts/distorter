@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QString>
 
 #include <opencv2/core.hpp>
 
@@ -14,7 +15,9 @@ public:
 
     Q_INVOKABLE void generateChessboard();
 
-    Q_INVOKABLE void updateIntrinsics(float fx, float fy, float cx, float cy, float k1, float k2, float k3);
+    Q_INVOKABLE void updateIntrinsics(double fx, double fy, double cx, double cy, double k1, double k2, double k3);
+
+    Q_INVOKABLE bool loadCalibrationAndImage();
 
 signals:
     void chessboardGenerated(const cv::Mat &chessboard);
@@ -25,12 +28,16 @@ signals:
 
     void undistortImageReady();
 
+    void newCalibLoaded(double fx, double fy, double cx, double cy, double k1, double k2, double k3);
+
 public slots:
     void onChessboardReady();
 
     void onUndistortedImageReady();
 
 private:
+    bool loadCalibrationAndImage(const QString &calibFilename, const QString &imageFilename);
+
     cv::Mat m_chessboard;
     cv::Mat m_calibM;
     cv::Mat m_distCoeffs;
