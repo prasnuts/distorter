@@ -196,11 +196,11 @@ Window {
         enabled: true
         ignoreUnknownSignals: true
 
-        onChessboardGenerated: {
+        onChessboardReady: {
             originalImage.source = "image://imageProvider/original?rand=" + Math.random();
         }
 
-        onNewUndistortedImage: {
+        onUndistortImageReady: {
             distortedImage.source = "image://imageProvider/distort?rand=" + Math.random();
         }
     }
@@ -215,7 +215,6 @@ Window {
     }
 
     function startUp() {
-        distorter.generateChessboard();
         distorter.generateChessboard();
         reset();
     }
