@@ -175,6 +175,18 @@ Window {
         }
 
         Button {
+            id: loadButton
+            anchors.right: resetButton.left
+            anchors.top: resetButton.top
+            anchors.rightMargin: marginWidth * 0.5
+            text: "Load"
+
+            onClicked: {
+                distorter.loadCalibrationAndImage();
+            }
+        }
+
+        Button {
             id: resetButton
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -202,6 +214,17 @@ Window {
 
         onUndistortImageReady: {
             distortedImage.source = "image://imageProvider/distort?rand=" + Math.random();
+        }
+
+        onNewCalibLoaded: {
+            fxValueWidget.initVal = fx;
+            fyValueWidget.initVal = fy;
+            cxValueWidget.initVal = cx;
+            cyValueWidget.initVal = cy;
+            k1ValueWidget.initVal = k1;
+            k2ValueWidget.initVal = k2;
+            k3ValueWidget.initVal = k3;
+            reset();
         }
     }
 
