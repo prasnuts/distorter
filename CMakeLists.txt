@@ -22,8 +22,7 @@ SET(RESOURCES ui/qml.qrc)
 SET(DATA_DIR -DDATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
 MESSAGE(STATUS "Data directory = ${DATA_DIR}")
 
-FIND_PACKAGE(OpenCV 3.0 REQUIRED COMPONENTS opencv_core opencv_imgproc opencv_imgcodecs opencv_highgui opencv_video
-        opencv_videoio opencv_calib3d opencv_aruco)
+FIND_PACKAGE(OpenCV 3.0 REQUIRED COMPONENTS opencv_core opencv_imgproc opencv_imgcodecs opencv_calib3d)
 
 MESSAGE(STATUS "OpenCV found, version ${OpenCV_VERSION}")
 
