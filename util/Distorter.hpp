@@ -21,6 +21,15 @@ signals:
 
     void newUndistortedImage(const cv::Mat &undistortedImage);
 
+    void chessboardReady();
+
+    void undistortImageReady();
+
+public slots:
+    void onChessboardReady();
+
+    void onUndistortedImageReady();
+
 private:
     cv::Mat m_chessboard;
     cv::Mat m_calibM;

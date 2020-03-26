@@ -50,5 +50,15 @@ void Distorter::updateIntrinsics(float fx, float fy, float cx, float cy, float k
     }
     cv::Mat undistortedImage;
     cv::undistort(m_chessboard, undistortedImage, m_calibM, m_distCoeffs);
-    newUndistortedImage(undistortedImage);
+    emit newUndistortedImage(undistortedImage);
+}
+
+void Distorter::onChessboardReady()
+{
+    emit chessboardReady();
+}
+
+void Distorter::onUndistortedImageReady()
+{
+    emit undistortImageReady();
 }
