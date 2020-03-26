@@ -13,6 +13,11 @@ public:
 
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
 
+signals:
+    void chessboardReady();
+
+    void undistortedImageReady();
+
 public slots:
     void onChessboardGenerated(const cv::Mat &chessboard);
 

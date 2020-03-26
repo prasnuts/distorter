@@ -16,6 +16,7 @@ void ImageProvider::onChessboardGenerated(const cv::Mat &chessboard)
     cv::cvtColor(copy, temp, CV_BGR2RGB);
     QImage qImage((const uchar *) temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888);
     m_pixmap = QPixmap::fromImage(qImage);
+    emit chessboardReady();
 }
 
 void ImageProvider::onNewUndistortedImage(const cv::Mat &undistortedImage)
@@ -26,4 +27,5 @@ void ImageProvider::onNewUndistortedImage(const cv::Mat &undistortedImage)
     cv::cvtColor(copy, temp, CV_BGR2RGB);
     QImage qImage((const uchar *) temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888);
     m_pixmap = QPixmap::fromImage(qImage);
+    emit undistortedImageReady();
 }
